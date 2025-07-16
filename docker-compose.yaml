@@ -1,0 +1,28 @@
+services:
+  android-emulator:
+    build: .
+    container_name: android-signage-test
+    ports:
+      - "6080:6080"  # Web VNC access
+      - "5900:5900"  # Direct VNC access  
+      - "5555:5555"  # ADB connection
+    environment:
+      - DISPLAY=:99
+    volumes:
+      - android_data:/home/android/.android
+    devices:
+      - /dev/kvm:/dev/kvm
+    group_add:
+      - kvm
+    privileged: true
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: '2'
+        reservations:
+          memory: 2G
+          cpus: '1'
+
+volumes:
+  android_data:
